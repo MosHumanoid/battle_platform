@@ -1,29 +1,68 @@
 > ver:2023/7/21 实现1v1比赛demo，且方便拓展至NvN。
 
+> ver:2023/7/27 
+> 1.增加了IMU直接计算获得的方位信息。
+> 2.对安装过程进行简易化处理
+
+> ver:2023/8/2 基于双线程与queue实现ros和网络通讯
+
 ### 对战平台使用方法
 
 #### 1.环境配置
 
-按照单机器人情况完成仿真环境配置与安装。
-
+* 按照单机器人情况完成仿真环境配置与安装。
+* 安装[SoccerXComm](https://moshumanoid.github.io/SoccerXComm/) SDK
+```shell
+pip3 install soccerxcomm
+```
+* 安装显卡驱动， N卡需要opengl才能让webots加速
 #### 2.原仿真文件处理 
 
-* 将`battle1v1demo.wbt` 放入 `THMOS_webots_sim/worlds/`
-* 将`battle_robot_uni` 放入 `THMOS_webots_sim/controllers/`
-* 将`battlebot.launch` 放入 `bitbots_thmos_meta/bitbots_motion/bitbots_quintic_walk/launch/` 
-* 将`teleop_keyboard.py` 放入`bitbots_thmos_meta/bitbots_misc/bitbots_teleop/scripts/`替换原文件
+* 使用现在的`THMOS_webots_sim`替换原来的webots仿真文件夹。
+
+* 将`battle_platform`放入工作空间的src下，并安装包。
+
+```shell
+catkin build battle_platform
+```
+
+* 踢球、步态参数均放在`battle_platform/config`下，然后相应的修改在`battle_platform/launch`下的`battlebot.launch`中的调用。
 
 #### 3.测试
 
 * 启动踢球和走路节点
-`roslaunch bitbots_quintic_walk battlebot.launch` 
+
+```shell
+roslaunch battle_platform battlebot.launch
+```
+若单纯测试通讯：
+
+```shell
+roscore
+```
 
 * 启动webots仿真
-`webots ~/THMOS_webots_sim/worlds/battle1v1demo.wbt` 
 
-* 启动控制器
+```shell
+webots /battle_webots_sim/worlds/battle1v1demo.wbt
+```
 
->  1. 该脚本通过键盘按键控制机器人的走路、踢球和转头，运行时有提示(也可以使用rqt控制，但rqt不方便测试踢球和转头)
->  2. 利用命令行传参选择机器人(机器人的代号是红方r1，r2...，蓝方b1，b2，...)下面以红方1号机器人为例。
+* 启动网络控制器
 
-`rosrun bitbots_teleop teleop_keyboard.py --id=r1`
+```shell
+rosrun battle_platform battle_manager.py --bot_num=1
+rosrun battle_platform demo_client.py
+```
+
+>  1. 该脚本基于[SoccerXComm](https://moshumanoid.github.io/SoccerXComm/) 与 `battle_player.py`
+>  2. 参数`bot_num`为一边上场的机器人的数目
+
+* 启动键盘测试控制器(测试用)
+
+```shell
+rosrun battle_platform keyboard_controller.py --id=r1
+```
+
+>  1. 该脚本通过键盘按键控制机器人的走路、踢球和转头
+>  2. 机器人的代号是红方r1，r2...，蓝方b1，b2，...
+>  3. 上面以红方1号机器人为例。

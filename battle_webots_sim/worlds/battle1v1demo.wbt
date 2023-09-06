@@ -1,0 +1,40 @@
+#VRML_SIM R2021b utf8
+WorldInfo {
+  basicTimeStep 4
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation 0.04557682193371852 -0.9983269928713862 -0.03558045259404809 4.955875309904395
+  position 4.3267400994421275 1.1861977419502192 1.4304060846383957
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RobocupSoccerField {
+}
+DEF red_player_1 THMOS {
+  translation -1.54 0.44 0.035141
+  rotation -3.3905013482585576e-09 0.7071062811861719 0.7071072811865696 3.14159
+  name "red_player_1"
+  controller "battle_robot_uni"
+  controllerArgs [
+    "--robot_name=r1"
+  ]
+}
+DEF Soccer RobocupSoccerBall {
+  translation -2.8 0.09 0.41
+}
+DEF blue_player_1 THMOS {
+  translation -1.53 0.44 0.815141
+  rotation -3.3905013482585576e-09 0.7071062811861719 0.7071072811865696 3.14159
+  name "blue_player_1"
+  controller "battle_robot_uni"
+  controllerArgs [
+    "--robot_name=b1"
+  ]
+}
+DEF Referee Robot {
+  controller "referee_controller"
+  supervisor TRUE
+}

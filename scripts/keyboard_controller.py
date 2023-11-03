@@ -97,7 +97,7 @@ walkready = JointCommand(
         -0.0625,  # RAnkleRoll
     ])
 msg = """
-BitBots Teleop - modify by jinyin
+BitBots Teleop
 --------------
 Walk around:            Move head:
     q    w    e         u    i    o
